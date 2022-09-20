@@ -1,11 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import Nav from "../components/Nav";
 import { auth } from "../firebase";
 import PlansScreen from "./PlansScreen";
 import "./ProfileScreen.css";
 
 function ProfileScreen(props) {
+  const history = useHistory();
   const user = useSelector((state) => state.userSlice.user);
   const userSubscription = useSelector(
     (state) => state.userSlice.userSubscription
@@ -22,7 +24,7 @@ function ProfileScreen(props) {
             alt=""
           />
           <div className="profileScreen__details">
-            <h2>{user.email}</h2>
+            <h2>{user?.email}</h2>
             <div className="profileScreen__plans">
               <h3>
                 Plans{" "}
@@ -31,7 +33,10 @@ function ProfileScreen(props) {
               </h3>
               <PlansScreen />
               <button
-                onClick={() => auth.signOut()}
+                onClick={() => {
+                  auth.signOut();
+                  history.replace("/");
+                }}
                 className="profileScreen__signOut"
               >
                 Sign Out

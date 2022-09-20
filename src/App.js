@@ -21,14 +21,13 @@ function App() {
     (state) => state.movieTrailerSlice.movieTrailerUrl
   );
   const user = useSelector((state) => state.userSlice.user);
-  const userSubscription = useSelector(
-    (state) => state.userSlice.userSubscription
-  );
+  const subscriptionData = localStorage.getItem("SUBSCRIPTION");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(function (user) {
       if (user) {
         // User is signed in.
+
         dispatch(
           login({
             id: user.uid,
@@ -55,11 +54,7 @@ function App() {
         ) : (
           <Switch>
             <Route path="/" exact>
-              {userSubscription == null ? (
-                <Redirect to="/profile" />
-              ) : (
-                <HomeScreen />
-              )}
+              {subscriptionData == null ? <ProfileScreen /> : <HomeScreen />}
             </Route>
 
             <Route path="/profile">
